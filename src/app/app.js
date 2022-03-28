@@ -1,3 +1,6 @@
+//
+const path = require('path')
+//
 const express = require('express')
 const logger = require('morgan')
 const cors = require('cors')
@@ -18,6 +21,13 @@ const swaggerDocument = require('../../swagger.json')
 const app = express()
 
 const formatsLogger = app.get('env') === 'development' ? 'dev' : 'short'
+//
+app.use(express.static(path.join(__dirname, 'build')))
+
+app.get('/', function (req, res) {
+  res.sendFile(path.join(__dirname, 'build', 'index.html'))
+})
+//
 app.use(helmet())
 app.use(logger(formatsLogger))
 app.use(cors())
@@ -25,16 +35,12 @@ app.use(express.json({ limit: 10000 })) // the limit is set in opposition DDoS a
 app.use('/', rateLimit(limiterAPI))
 app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument))
 app.use(implantResBuilder)
-// app.use('/', userRoute)
-// app.use('/', seriesRoute)
-// app.use('/', faqRoute)
-// app.use('/', cardsRoute)
-// app.use('/', guard, editionsRoute)
-app.use('/*', userRoute)
-app.use('/*', seriesRoute)
-app.use('/*', faqRoute)
-app.use('/*', cardsRoute)
-app.use('/*', guard, editionsRoute)
+app.use('/', userRoute)
+app.use('/', seriesRoute)
+app.use('/', faqRoute)
+app.use('/', cardsRoute)
+app.use('/', guard, editionsRoute)
+
 // app.use('/', guard, cardsRoute)
 
 app.use((_req, res) => {

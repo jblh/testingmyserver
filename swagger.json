@@ -1,0 +1,1938 @@
+{
+  "openapi": "3.0.1",
+  "info": {
+    "version": "2.0.0",
+    "title": "hh_cc",
+    "description": "API documentation for project 'hh_cc'",
+    "license": {
+      "name": "MIT",
+      "url": "https://opensource.org/licenses/MIT"
+    }
+  },
+  "consumes": ["application/json"],
+  "produces": ["application/json"],
+  "servers": [
+    { "url": "http://localhost:3000/" },
+    { "url": "https://hhcc-backend.herokuapp.com" }
+  ],
+  "tags": [
+    {
+      "name": "Auth",
+      "description": "Authorization endpoints"
+    },
+    {
+      "name": "Series",
+      "description": "Series endpoints"
+    },
+    {
+      "name": "Editions",
+      "description": "Edition endpoints"
+    },
+    {
+      "name": "Cards",
+      "description": "Cards endpoints"
+    },
+    {
+      "name": "FAQ",
+      "description": "FAQs endpoints"
+    }
+  ],
+  "paths": {
+    "/login": {
+      "post": {
+        "tags": ["Auth"],
+        "summary": "User authentication",
+        "parameters": [],
+        "requestBody": {
+          "description": "Authentication's object",
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/LoginRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/LoginResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request (invalid request body)",
+            "content": {}
+          },
+          "403": {
+            "description": "Login doesn't exist / Password is wrong",
+            "content": {}
+          }
+        }
+      }
+    },
+    "/logout": {
+      "post": {
+        "tags": ["Auth"],
+        "summary": "Logout",
+        "security": [{ "Bearer": [] }],
+        "parameters": [],
+        "responses": {
+          "204": {
+            "description": "Successful operation",
+            "content": {}
+          },
+          "400": {
+            "description": "No token provided",
+            "content": {}
+          },
+          "401": {
+            "description": "Unauthorized (invalid access token)",
+            "content": {}
+          },
+          "404": {
+            "description": "Invalid user / Invalid session",
+            "content": {}
+          }
+        }
+      }
+    },
+    "/series": {
+      "get": {
+        "tags": ["Series"],
+        "summary": "Get all series",
+        "security": [{ "Bearer": [] }],
+        "parameters": [],
+        "responses": {
+          "201": {
+            "description": "Successful operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GetSeriesResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request (invalid request body) / No token provided",
+            "content": {}
+          },
+          "401": {
+            "description": "Unauthorized (invalid access token)",
+            "content": {}
+          },
+          "404": {
+            "description": "Series not found / Invalid user / Invalid session",
+            "content": {}
+          }
+        }
+      },
+      "post": {
+        "tags": ["Series"],
+        "summary": "Add a series",
+        "security": [{ "Bearer": [] }],
+        "parameters": [],
+        "requestBody": {
+          "description": "Series's object",
+          "required": true,
+          "content": {
+            "multipart/form-data": {
+              "schema": {
+                "$ref": "#/components/schemas/PostSeriesRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Successful operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PostSeriesResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request (invalid request body) / No token provided",
+            "content": {}
+          },
+          "401": {
+            "description": "Unauthorized (invalid access token)",
+            "content": {}
+          },
+          "404": {
+            "description": "Series not found / Invalid user / Invalid session",
+            "content": {}
+          }
+        }
+      }
+    },
+    "/series/{seriesId}": {
+      "put": {
+        "tags": ["Series"],
+        "summary": "Update one series",
+        "security": [{ "Bearer": [] }],
+        "parameters": [
+          {
+            "name": "seriesId",
+            "in": "path",
+            "description": "Id of the series you want to update",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "requestBody": {
+          "description": "Series's object. At least one field is required",
+          "content": {
+            "multipart/form-data": {
+              "schema": {
+                "$ref": "#/components/schemas/PutSeriesRequest"
+              }
+            },
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/PostSeriesRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Successful operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PutSeriesResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request (invalid request body) / No token provided",
+            "content": {}
+          },
+          "401": {
+            "description": "Unauthorized (invalid access token)",
+            "content": {}
+          },
+          "404": {
+            "description": "Series not found / Invalid user / Invalid session",
+            "content": {}
+          }
+        }
+      },
+      "get": {
+        "tags": ["Series"],
+        "summary": "Find series by ID",
+        "security": [{ "Bearer": [] }],
+        "parameters": [
+          {
+            "name": "seriesId",
+            "in": "path",
+            "description": "Id of the series you want to find",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Successful operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PostSeriesResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request (invalid request body) / No token provided",
+            "content": {}
+          },
+          "401": {
+            "description": "Unauthorized (invalid access token)",
+            "content": {}
+          },
+          "404": {
+            "description": "Series not found / Invalid user / Invalid session",
+            "content": {}
+          }
+        }
+      },
+      "delete": {
+        "tags": ["Series"],
+        "summary": "Delete card",
+        "security": [{ "Bearer": [] }],
+        "parameters": [
+          {
+            "name": "seriesId",
+            "in": "path",
+            "description": "Series's id you want to delete",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "Successful operation",
+            "content": {}
+          },
+          "400": {
+            "description": "Bad request (invalid id) / No token provided",
+            "content": {}
+          },
+          "401": {
+            "description": "Unauthorized (invalid access token)",
+            "content": {}
+          },
+          "404": {
+            "description": "Edition not found / Card not found / Invalid user / Invalid session",
+            "content": {}
+          }
+        }
+      }
+    },
+    "/editions/{seriesId}": {
+      "get": {
+        "tags": ["Editions"],
+        "summary": "Get all editions for current series",
+        "security": [{ "Bearer": [] }],
+        "parameters": [
+          {
+            "name": "seriesId",
+            "in": "path",
+            "description": "Id of the series you want to get ('id' field in series object)",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GetEditionsResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "No token provided",
+            "content": {}
+          },
+          "401": {
+            "description": "Unauthorized (invalid access token)",
+            "content": {}
+          },
+          "404": {
+            "description": "Invalid user / Invalid session",
+            "content": {}
+          }
+        }
+      },
+      "post": {
+        "tags": ["Editions"],
+        "summary": "Create edition for the series",
+        "security": [{ "Bearer": [] }],
+        "parameters": [
+          {
+            "name": "seriesId",
+            "in": "path",
+            "description": "Id of the series you want to update ('id' field in series object)",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "requestBody": {
+          "description": "Edition's object",
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/PostEditionRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Successful operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PostEditionResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request (invalid request body or id) / No token provided",
+            "content": {}
+          },
+          "401": {
+            "description": "Unauthorized (invalid access token)",
+            "content": {}
+          },
+          "404": {
+            "description": "Series not found / Invalid user / Invalid session",
+            "content": {}
+          }
+        }
+      }
+    },
+    "/edition/{editionId}": {
+      "get": {
+        "tags": ["Editions"],
+        "summary": "Get one edition by Id",
+        "security": [{ "Bearer": [] }],
+        "parameters": [
+          {
+            "name": "editionId",
+            "in": "path",
+            "description": "Id of the edition you want to get ('id' field in series object)",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GetEditionByIdResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "No token provided",
+            "content": {}
+          },
+          "401": {
+            "description": "Unauthorized (invalid access token)",
+            "content": {}
+          },
+          "404": {
+            "description": "Invalid user / Invalid session",
+            "content": {}
+          }
+        }
+      },
+      "delete": {
+        "tags": ["Editions"],
+        "summary": "Delete edition",
+        "security": [{ "Bearer": [] }],
+        "parameters": [
+          {
+            "name": "editionId",
+            "in": "path",
+            "description": "Edition's id ('id' field in edition's object)",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "Successful operation",
+            "content": {}
+          },
+          "400": {
+            "description": "Bad request (invalid id) / No token provided",
+            "content": {}
+          },
+          "401": {
+            "description": "Unauthorized (invalid access token)",
+            "content": {}
+          },
+          "404": {
+            "description": "Edition not found / Series not found / Invalid user / Invalid session",
+            "content": {}
+          }
+        }
+      }
+    },
+    "/cards-categories": {
+      "get": {
+        "tags": ["Cards"],
+        "summary": "Get categories calculate a % from every card saved in the database",
+        "security": [{ "Bearer": [] }],
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "Successful operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GetAllCategoriesResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "No token provided",
+            "content": {}
+          },
+          "401": {
+            "description": "Unauthorized (invalid access token)",
+            "content": {}
+          },
+          "404": {
+            "description": "Invalid user / Invalid session",
+            "content": {}
+          }
+        }
+      }
+    },
+    "/cards/{editionId}": {
+      "get": {
+        "tags": ["Cards"],
+        "summary": "Get all cards for current edition",
+        "security": [{ "Bearer": [] }],
+        "parameters": [
+          {
+            "name": "editionId",
+            "in": "path",
+            "description": "Edition's id ('id' field in edition's object)",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GetAllCardsResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "No token provided",
+            "content": {}
+          },
+          "401": {
+            "description": "Unauthorized (invalid access token)",
+            "content": {}
+          },
+          "404": {
+            "description": "Invalid user / Invalid session",
+            "content": {}
+          }
+        }
+      },
+      "post": {
+        "tags": ["Cards"],
+        "summary": "Add card for the edition",
+        "security": [{ "Bearer": [] }],
+        "parameters": [
+          {
+            "name": "editionId",
+            "in": "path",
+            "description": "Id of the edition you want to update ('id' field in edition's object)",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "requestBody": {
+          "description": "Card's object",
+          "required": true,
+          "content": {
+            "multipart/form-data": {
+              "schema": {
+                "$ref": "#/components/schemas/PostCardRequestWithJpeg"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Successful operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PostCardResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request (invalid request body or id) / No token provided",
+            "content": {}
+          },
+          "401": {
+            "description": "Unauthorized (invalid access token)",
+            "content": {}
+          },
+          "404": {
+            "description": "Card not found / Invalid user / Invalid session",
+            "content": {}
+          }
+        }
+      }
+    },
+    "/card/{id}": {
+      "get": {
+        "tags": ["Cards"],
+        "summary": "Get one card by id",
+        "security": [{ "Bearer": [] }],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "Card's id ('id' field in series's or edition's object)",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful operation",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/GetCardByIdResponse" }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request (invalid request body or id) / No token provided",
+            "content": {}
+          },
+          "401": {
+            "description": "Unauthorized (invalid access token)",
+            "content": {}
+          },
+          "404": {
+            "description": "Edition not found / Card not found / Invalid user / Invalid session",
+            "content": {}
+          }
+        }
+      },
+      "put": {
+        "tags": ["Cards"],
+        "summary": "Update card in the edition",
+        "security": [{ "Bearer": [] }],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "Id of the card you want to update ('id' field in card's object)",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "requestBody": {
+          "description": "Card's object",
+          "required": true,
+          "content": {
+            "multipart/form-data": {
+              "schema": {
+                "$ref": "#/components/schemas/PostCardRequestWithJpeg"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Successful operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UpdateCardResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request (invalid request body or id) / No token provided",
+            "content": {}
+          },
+          "401": {
+            "description": "Unauthorized (invalid access token)",
+            "content": {}
+          },
+          "404": {
+            "description": "Card not found / Invalid user / Invalid session",
+            "content": {}
+          }
+        }
+      },
+      "delete": {
+        "tags": ["Cards"],
+        "summary": "Delete card",
+        "security": [{ "Bearer": [] }],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "Card's id ('id' field in card's object)",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "Successful operation",
+            "content": {}
+          },
+          "400": {
+            "description": "Bad request (invalid id) / No token provided",
+            "content": {}
+          },
+          "401": {
+            "description": "Unauthorized (invalid access token)",
+            "content": {}
+          },
+          "404": {
+            "description": "Edition not found / Card not found / Invalid user / Invalid session",
+            "content": {}
+          }
+        }
+      }
+    },
+    "/card/png/{id}": {
+      "patch": {
+        "tags": ["Cards"],
+        "summary": "Upload png or jpeg image for card",
+        "security": [{ "Bearer": [] }],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "Card's id ('id' field in edition's object)",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "requestBody": {
+          "description": "Card's object. At least one field is required",
+          "required": true,
+          "content": {
+            "multipart/form-data": {
+              "schema": {
+                "$ref": "#/components/schemas/PatchCardRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful operation",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/PatchCardResponse" }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request (invalid request body or id) / No token provided",
+            "content": {}
+          },
+          "401": {
+            "description": "Unauthorized (invalid access token)",
+            "content": {}
+          },
+          "404": {
+            "description": "Child not found / Gift not found / Invalid user / Invalid session",
+            "content": {}
+          },
+          "415": {
+            "description": "File is not an image",
+            "content": {}
+          }
+        }
+      }
+    },
+    "/card/webm/{id}": {
+      "patch": {
+        "tags": ["Cards"],
+        "summary": "Upload webm format for card",
+        "security": [{ "Bearer": [] }],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "Card's id ('id' field in edition's object)",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "requestBody": {
+          "description": "Card's object. At least one field is required",
+          "required": true,
+          "content": {
+            "multipart/form-data": {
+              "schema": {
+                "$ref": "#/components/schemas/PatchCardRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful operation",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/PatchCardResponse" }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request (invalid request body or id) / No token provided",
+            "content": {}
+          },
+          "401": {
+            "description": "Unauthorized (invalid access token)",
+            "content": {}
+          },
+          "404": {
+            "description": "Child not found / Gift not found / Invalid user / Invalid session",
+            "content": {}
+          },
+          "415": {
+            "description": "File is not an image",
+            "content": {}
+          }
+        }
+      }
+    },
+    "/faq": {
+      "get": {
+        "tags": ["FAQ"],
+        "summary": "Get all faqs",
+        "security": [{ "Bearer": [] }],
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "Successful operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GetFaqsResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "No token provided",
+            "content": {}
+          },
+          "401": {
+            "description": "Unauthorized (invalid access token)",
+            "content": {}
+          },
+          "404": {
+            "description": "Invalid user / Invalid session",
+            "content": {}
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "LoginRequest": {
+        "required": ["login", "password"],
+        "type": "object",
+        "properties": {
+          "login": {
+            "type": "string",
+            "description": "User's login",
+            "format": "login",
+            "example": "test10"
+          },
+          "password": {
+            "type": "string",
+            "description": "User's password",
+            "example": "jsdhgjsh33"
+          }
+        }
+      },
+      "LoginResponse": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "type": "object",
+            "properties": {
+              "accessToken": {
+                "type": "string",
+                "description": "Session's access token (needed for all requests)",
+                "example": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1aWQiOiI1ZmMyMDg1YmQwOTM2NTI4MTA3Y2UyNzQiLCJzaWQiOiI1ZmMyZDJmY2UxZDIwNTA2NzAyYmRkMjIiLCJpYXQiOjE2MDY2MDM1MTYsImV4cCI6MTYwNjYwNzExNn0.rJ_QjU4KvA76H96RHsvOBChK0Vjbd0NmqjMxdQVJIXA"
+              }
+            }
+          }
+        }
+      },
+      "GetSeriesResponse": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "seriesName": {
+                  "type": "string",
+                  "description": "Series's name",
+                  "example": "Series1"
+                },
+                "totalCardsNumber": {
+                  "type": "integer",
+                  "description": "Number of cards in the series",
+                  "example": 21
+                },
+                "urlLogo": {
+                  "type": "string",
+                  "description": "Series's image url (created if 'file' field was provided while adding new series)"
+                },
+                "id": {
+                  "type": "string",
+                  "description": "Series's id",
+                  "example": "507f1f77bcf86cd799439011"
+                },
+                "editions": {
+                  "type": "array",
+                  "description": "Series's editions",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "editionName": {
+                        "type": "string",
+                        "description": "Edition's name",
+                        "example": "Edition1"
+                      },
+                      "series": {
+                        "type": "string",
+                        "description": "Series's id",
+                        "example": "61904c2d78611b0fef9a0295"
+                      },
+                      "cards": {
+                        "type": "array",
+                        "description": "Series's cards",
+                        "items": {
+                          "type": "object",
+                          "properties": {
+                            "cardName": {
+                              "type": "string",
+                              "description": "Cards's name",
+                              "example": "Exposition Universelle2"
+                            },
+                            "cardDate": {
+                              "type": "string",
+                              "description": "Card's date. Format - year-month-day",
+                              "example": "2020-12-31"
+                            },
+                            "series": {
+                              "type": "string",
+                              "description": "Card's series id",
+                              "example": "507f1f77bcf86cd799439011"
+                            },
+                            "cardNumber": {},
+                            "edition": {
+                              "type": "string",
+                              "description": "Card's edition id",
+                              "example": "507f1f77bcf86cd799439011"
+                            },
+                            "circulation": {
+                              "type": "integer"
+                            },
+                            "uploadCardThumbnailJpj": {
+                              "type": "string",
+                              "description": "Cloud's Jpg url (created if 'file' field was provided while adding new card)"
+                            },
+                            "idCloudJpg": {
+                              "type": "string",
+                              "description": "Cloud's Webm id. Exists only with uploadCardThumbnailJpj",
+                              "example": "cardsJpg/arm1hze2vws2oe9inywy"
+                            },
+                            "uploadCardHighResWebm": {
+                              "type": "string",
+                              "description": "Cloud's Webm url (created if 'file' field was provided while adding new card)"
+                            },
+                            "idCloudWebm": {
+                              "type": "string",
+                              "description": "Cloud's Webm id. Exists only with uploadCardHighResWebm",
+                              "example": "cardsWebm/arm1hze2vws2oe9inywy"
+                            },
+                            "type": {
+                              "type": "string",
+                              "description": "Cards's type Options",
+                              "enum": [
+                                "Human",
+                                "Event",
+                                "Invention",
+                                "Artwork",
+                                "Special"
+                              ]
+                            },
+                            "rarity": {
+                              "type": "string",
+                              "description": "Cards's Rarity Options",
+                              "enum": [
+                                "Common",
+                                "Uncommon",
+                                "Rare",
+                                "Epic",
+                                "Legendary"
+                              ]
+                            },
+                            "categories": {
+                              "type": "array",
+                              "description": "Card's category",
+                              "items": {
+                                "type": "string"
+                              }
+                            },
+                            "description": {
+                              "type": "string",
+                              "description": "Information about card"
+                            },
+                            "goldenCard": {
+                              "type": "boolean",
+                              "description": "Card's status"
+                            },
+                            "openseaLink": {
+                              "type": "string",
+                              "description": "Golden Card link on OpenSea. Open only if Golden Card is true"
+                            },
+                            "artist": {
+                              "type": "string"
+                            },
+                            "animator": {
+                              "type": "string"
+                            },
+                            "id": {
+                              "type": "string",
+                              "description": "Cards's id",
+                              "example": "507f1f77bcf86cd799439011"
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                },
+                "cards": {
+                  "type": "array",
+                  "description": "Edition's cards",
+                  "items": {
+                    "type": "string",
+                    "description": "Edition's id cards"
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "PostSeriesRequest": {
+        "required": ["seriesName"],
+        "type": "object",
+        "properties": {
+          "seriesName": {
+            "type": "string",
+            "description": "Series's name",
+            "example": "Series1"
+          },
+          "file": {
+            "type": "string",
+            "format": "binary",
+            "description": "Series's logo"
+          }
+        }
+      },
+      "PostSeriesResponse": {
+        "type": "object",
+        "properties": {
+          "seriesName": {
+            "type": "string",
+            "description": "Series's name",
+            "example": "Series1"
+          },
+          "totalCardsNumber": {
+            "type": "integer",
+            "description": "How many cards in exactly series",
+            "example": "0"
+          },
+          "urlLogo": {
+            "type": "string",
+            "description": "Series's logo"
+          },
+          "idCloudLogo": {
+            "type": "string",
+            "description": "Cloudinary document service versionKey (ignore)"
+          },
+          "editions": {
+            "type": "array",
+            "items": {
+              "type": "object"
+            }
+          },
+          "cards": {
+            "type": "array",
+            "items": {
+              "type": "object"
+            }
+          },
+          "id": {
+            "type": "string",
+            "description": "Series's id",
+            "example": "507f1f77bcf86cd799439011"
+          }
+        }
+      },
+      "PutSeriesRequest": {
+        "type": "object",
+        "properties": {
+          "seriesName": {
+            "type": "string",
+            "description": "Series's name",
+            "example": "Series1"
+          },
+          "totalCardsNumber": {
+            "type": "integer",
+            "description": "Total cards number",
+            "example": 21
+          },
+          "file": {
+            "type": "string",
+            "format": "binary",
+            "description": "Series's logo"
+          }
+        }
+      },
+      "PutSeriesResponse": {
+        "type": "object",
+        "properties": {
+          "seriesName": {
+            "type": "string",
+            "description": "Series's name",
+            "example": "Series1"
+          },
+          "totalCardsNumber": {
+            "type": "integer",
+            "description": "How many cards in exactly series",
+            "example": "0"
+          },
+          "urlLogo": {
+            "type": "string",
+            "description": "Series's logo"
+          },
+          "idCloudLogo": {
+            "type": "string",
+            "description": "Cloudinary document service versionKey (ignore)"
+          },
+          "editions": {
+            "type": "array",
+            "items": {
+              "type": "object"
+            }
+          },
+          "cards": {
+            "type": "array",
+            "items": {
+              "type": "object"
+            }
+          },
+          "id": {
+            "type": "string",
+            "description": "Series's id",
+            "example": "507f1f77bcf86cd799439011"
+          }
+        }
+      },
+      "GetEditionsResponse": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "type": "array",
+            "description": "Series's editions",
+            "items": {
+              "type": "object",
+              "properties": {
+                "editionName": {
+                  "type": "string",
+                  "description": "Edition's name",
+                  "example": "Edition1"
+                },
+                "id": {
+                  "type": "string",
+                  "description": "Edition's id",
+                  "example": "61904c2d78611b0fef9a0295"
+                },
+                "series": {
+                  "type": "string",
+                  "description": "Series's id",
+                  "example": "61904c2d78611b0fef9a0295"
+                },
+                "cards": {
+                  "type": "array",
+                  "description": "Edition's id cards",
+                  "items": {
+                    "type": "string",
+                    "description": "Edition's id cards"
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "PostEditionRequest": {
+        "required": ["editionName"],
+        "type": "object",
+        "properties": {
+          "editionName": {
+            "type": "string",
+            "description": "Edition's name",
+            "example": "Edition1"
+          }
+        }
+      },
+      "PostEditionResponse": {
+        "type": "object",
+        "properties": {
+          "editionName": {
+            "type": "string",
+            "description": "Edition's name",
+            "example": "Edition1"
+          },
+          "series": {
+            "type": "string",
+            "description": "Series's id",
+            "example": "61904c2d78611b0fef9a0295"
+          },
+          "cards": {
+            "type": "array",
+            "description": "Edition's cards",
+            "items": {
+              "type": "string",
+              "description": "Edition's id cards",
+              "example": "61904c2d78611b0fef9a0295, 45604c2d7fgr450fef9ayh77"
+            }
+          }
+        }
+      },
+      "GetEditionByIdResponse": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "type": "object",
+            "properties": {
+              "foundItem": {
+                "type": "object",
+                "properties": {
+                  "editionName": {
+                    "type": "string",
+                    "description": "Edition's name",
+                    "example": "Edition1"
+                  },
+                  "series": {
+                    "type": "string",
+                    "description": "Series's id",
+                    "example": "61904c2d78611b0fef9a0295"
+                  },
+                  "cards": {
+                    "type": "array",
+                    "description": "Edition's cards",
+                    "items": {
+                      "type": "string",
+                      "description": "Edition's id cards",
+                      "example": "61904c2d78611b0fef9a0295, 45604c2d7fgr450fef9ayh77"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "GetAllCategoriesResponse": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "type": "object",
+            "properties": {
+              "art": {
+                "type": "string",
+                "description": "Categories's name",
+                "example": "33.33%"
+              },
+              "renaissance": {
+                "type": "string",
+                "description": "Categories's name",
+                "example": "16.67%"
+              },
+              "XXcentury": {
+                "type": "string",
+                "description": "Categories's name",
+                "example": "16.67%"
+              },
+              "space": {
+                "type": "string",
+                "description": "Categories's name",
+                "example": "16.67%"
+              },
+              "usa": {
+                "type": "string",
+                "description": "Categories's name",
+                "example": "33.33%"
+              },
+              "XIXcentury": {
+                "type": "string",
+                "description": "Categories's name",
+                "example": "33.33%"
+              },
+              "france": {
+                "type": "string",
+                "description": "Categories's name",
+                "example": "33.33%"
+              }
+            }
+          }
+        }
+      },
+      "GetAllCardsResponse": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "type": "array",
+            "description": "Series's editions",
+            "items": {
+              "type": "object",
+              "properties": {
+                "cardName": {
+                  "type": "string",
+                  "description": "Cards's name",
+                  "example": "Exposition Universelle2"
+                },
+                "cardDate": {
+                  "type": "string",
+                  "description": "Card's date. Format - year-month-day",
+                  "example": "2020-12-31"
+                },
+                "series": {
+                  "type": "string",
+                  "description": "Card's series id",
+                  "example": "507f1f77bcf86cd799439011"
+                },
+                "cardNumber": {
+                  "type": "integer",
+                  "description": "X/21 (X is the number of the card, 21 - is autofielled from Number of series cards  )",
+                  "example": "1/21"
+                },
+                "edition": {
+                  "type": "string",
+                  "description": "Card's edition id",
+                  "example": "507f1f77bcf86cd799439011"
+                },
+                "circulation": {
+                  "type": "integer"
+                },
+                "uploadCardThumbnailJpj": {
+                  "type": "string",
+                  "description": "Cloud's Jpg url (created if 'file' field was provided while adding new card)",
+                  "example": "https://res.cloudinary.com/debt92wvz/image/upload/v1636659464/cardsJpg/rqhxohiqidv6gpffsai2.png"
+                },
+                "idCloudJpg": {
+                  "type": "string",
+                  "description": "Cloud's Webm id. Exists only with uploadCardThumbnailJpj",
+                  "example": "cardsJpg/arm1hze2vws2oe9inywy"
+                },
+                "uploadCardHighResWebm": {
+                  "type": "string",
+                  "description": "Cloud's Webm url (created if 'file' field was provided while adding new card)",
+                  "example": "https://res.cloudinary.com/debt92wvz/video/upload/v1636659373/cardsWebm/limahh5bkoo9z4bdlobr.webm"
+                },
+                "idCloudWebm": {
+                  "type": "string",
+                  "description": "Cloud's Webm id. Exists only with uploadCardHighResWebm",
+                  "example": "cardsWebm/arm1hze2vws2oe9inywy"
+                },
+                "type": {
+                  "type": "array",
+                  "description": "Cards's type Options",
+                  "items": {
+                    "type": "string",
+                    "example": [
+                      "Human",
+                      "Event",
+                      "Invention",
+                      "Artwork",
+                      "Special"
+                    ]
+                  }
+                },
+                "rarity": {
+                  "type": "array",
+                  "description": "Cards's Rarity Options",
+                  "items": {
+                    "type": "string",
+                    "exapmle": [
+                      "Common",
+                      "Uncommon",
+                      "Rare",
+                      "Epic",
+                      "Legendary"
+                    ]
+                  }
+                },
+                "categories": {
+                  "type": "array",
+                  "description": "Card's category",
+                  "items": {
+                    "type": "string"
+                  }
+                },
+                "description": {
+                  "type": "string",
+                  "description": "Information about card",
+                  "example": "The fourth of eight expositions held in the portrait painting buy Italian artist Leonardo da Vinci..."
+                },
+                "goldenCard": {
+                  "type": "boolean",
+                  "description": "Card's status"
+                },
+                "openseaLink": {
+                  "type": "string",
+                  "description": "Golden Card link on OpenSea. Open only if Golden Card is true",
+                  "example": "https://opensea.io"
+                },
+                "artist": {
+                  "type": "string",
+                  "example": "Claudio Bandoli"
+                },
+                "animator": {
+                  "type": "string",
+                  "example": "Claudio Bandoli"
+                },
+                "id": {
+                  "type": "string",
+                  "description": "Cards's id",
+                  "example": "507f1f77bcf86cd799439011"
+                }
+              }
+            }
+          }
+        }
+      },
+      "PostCardResponse": {
+        "type": "object",
+        "properties": {
+          "cardName": {
+            "type": "string",
+            "description": "Cards's name",
+            "example": "Exposition Universelle2"
+          },
+          "cardDate": {
+            "type": "string",
+            "description": "Card's date. Format - year-month-day",
+            "example": "2020-12-31"
+          },
+          "series": {
+            "type": "string",
+            "description": "Card's series id",
+            "example": "507f1f77bcf86cd799439011"
+          },
+          "cardNumber": {
+            "type": "integer",
+            "description": "X/21 (X is the number of the card, 21 - is autofielled from Number of series cards  )",
+            "example": "1/21"
+          },
+          "edition": {
+            "type": "string",
+            "description": "Card's edition id",
+            "example": "507f1f77bcf86cd799439011"
+          },
+          "circulation": {
+            "type": "integer"
+          },
+          "uploadCardThumbnailJpj": {
+            "type": "string",
+            "description": "Cloud's Jpg url (created if 'file' field was provided while adding new card)",
+            "example": "https://res.cloudinary.com/debt92wvz/image/upload/v1636659464/cardsJpg/rqhxohiqidv6gpffsai2.png"
+          },
+          "idCloudJpg": {
+            "type": "string",
+            "description": "Cloud's Webm id. Exists only with uploadCardThumbnailJpj",
+            "example": "cardsJpg/arm1hze2vws2oe9inywy"
+          },
+          "uploadCardHighResWebm": {
+            "type": "string",
+            "description": "Cloud's Webm url (created if 'file' field was provided while adding new card)",
+            "example": "https://res.cloudinary.com/debt92wvz/video/upload/v1636659373/cardsWebm/limahh5bkoo9z4bdlobr.webm"
+          },
+          "idCloudWebm": {
+            "type": "string",
+            "description": "Cloud's Webm id. Exists only with uploadCardHighResWebm",
+            "example": "cardsWebm/arm1hze2vws2oe9inywy"
+          },
+          "type": {
+            "type": "array",
+            "description": "Cards's type Options",
+            "items": {
+              "type": "string",
+              "example": ["Human", "Event", "Invention", "Artwork", "Special"]
+            }
+          },
+          "rarity": {
+            "type": "array",
+            "description": "Cards's Rarity Options",
+            "items": {
+              "type": "string",
+              "exapmle": ["Common", "Uncommon", "Rare", "Epic", "Legendary"]
+            }
+          },
+          "categories": {
+            "type": "array",
+            "description": "Card's category",
+            "items": {
+              "type": "string"
+            }
+          },
+          "description": {
+            "type": "string",
+            "description": "Information about card",
+            "example": "The fourth of eight expositions held in the portrait painting buy Italian artist Leonardo da Vinci..."
+          },
+          "goldenCard": {
+            "type": "boolean",
+            "description": "Card's status. In default - false",
+            "example": false
+          },
+          "openseaLink": {
+            "type": "string",
+            "description": "Golden Card link on OpenSea. Open only if Golden Card is true",
+            "example": "https://opensea.io"
+          },
+          "artist": {
+            "type": "string",
+            "example": "Claudio Bandoli"
+          },
+          "animator": {
+            "type": "string",
+            "example": "Claudio Bandoli"
+          },
+          "id": {
+            "type": "string",
+            "description": "Cards's id",
+            "example": "507f1f77bcf86cd799439011"
+          }
+        }
+      },
+      "GetCardByIdResponse": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "type": "object",
+            "properties": {
+              "foundItem": {
+                "type": "object",
+                "properties": {
+                  "cardName": {
+                    "type": "string",
+                    "description": "Cards's name",
+                    "example": "Exposition Universelle2"
+                  },
+                  "cardDate": {
+                    "type": "string",
+                    "description": "Card's date. Format - year-month-day",
+                    "example": "2020-12-31"
+                  },
+                  "series": {
+                    "type": "string",
+                    "description": "Card's series id",
+                    "example": "507f1f77bcf86cd799439011"
+                  },
+                  "cardNumber": {
+                    "type": "integer",
+                    "description": "X/21 (X is the number of the card, 21 - is autofielled from Number of series cards  )",
+                    "example": "1/21"
+                  },
+                  "edition": {
+                    "type": "string",
+                    "description": "Card's edition id",
+                    "example": "507f1f77bcf86cd799439011"
+                  },
+                  "circulation": {
+                    "type": "integer"
+                  },
+                  "uploadCardThumbnailJpj": {
+                    "type": "string",
+                    "description": "Cloud's Jpg url (created if 'file' field was provided while adding new card)",
+                    "example": "https://res.cloudinary.com/debt92wvz/image/upload/v1636659464/cardsJpg/rqhxohiqidv6gpffsai2.png"
+                  },
+                  "idCloudJpg": {
+                    "type": "string",
+                    "description": "Cloud's Webm id. Exists only with uploadCardThumbnailJpj",
+                    "example": "cardsJpg/arm1hze2vws2oe9inywy"
+                  },
+                  "uploadCardHighResWebm": {
+                    "type": "string",
+                    "description": "Cloud's Webm url (created if 'file' field was provided while adding new card)",
+                    "example": "https://res.cloudinary.com/debt92wvz/video/upload/v1636659373/cardsWebm/limahh5bkoo9z4bdlobr.webm"
+                  },
+                  "idCloudWebm": {
+                    "type": "string",
+                    "description": "Cloud's Webm id. Exists only with uploadCardHighResWebm",
+                    "example": "cardsWebm/arm1hze2vws2oe9inywy"
+                  },
+                  "type": {
+                    "type": "array",
+                    "description": "Cards's type Options",
+                    "items": {
+                      "type": "string",
+                      "example": [
+                        "Human",
+                        "Event",
+                        "Invention",
+                        "Artwork",
+                        "Special"
+                      ]
+                    }
+                  },
+                  "rarity": {
+                    "type": "array",
+                    "description": "Cards's Rarity Options",
+                    "items": {
+                      "type": "string",
+                      "exapmle": [
+                        "Common",
+                        "Uncommon",
+                        "Rare",
+                        "Epic",
+                        "Legendary"
+                      ]
+                    }
+                  },
+                  "categories": {
+                    "type": "array",
+                    "description": "Card's category",
+                    "items": {
+                      "type": "string"
+                    }
+                  },
+                  "description": {
+                    "type": "string",
+                    "description": "Information about card",
+                    "example": "The fourth of eight expositions held in the portrait painting buy Italian artist Leonardo da Vinci..."
+                  },
+                  "goldenCard": {
+                    "type": "boolean",
+                    "description": "Card's status. In default - false",
+                    "example": false
+                  },
+                  "openseaLink": {
+                    "type": "string",
+                    "description": "Golden Card link on OpenSea. Open only if Golden Card is true",
+                    "example": "https://opensea.io"
+                  },
+                  "artist": {
+                    "type": "string",
+                    "example": "Claudio Bandoli"
+                  },
+                  "animator": {
+                    "type": "string",
+                    "example": "Claudio Bandoli"
+                  },
+                  "id": {
+                    "type": "string",
+                    "description": "Cards's id",
+                    "example": "507f1f77bcf86cd799439011"
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "PostCardRequest": {
+        "required": ["cardName", "type", "rarity"],
+        "type": "object",
+        "properties": {
+          "cardName": {
+            "type": "string",
+            "description": "Cards's name",
+            "example": "Exposition Universelle2"
+          },
+          "type": {
+            "type": "array",
+            "description": "Cards's type Options",
+            "items": {
+              "type": "string",
+              "example": ["Human", "Event", "Invention", "Artwork", "Special"]
+            }
+          },
+          "rarity": {
+            "type": "array",
+            "description": "Cards's Rarity Options",
+            "items": {
+              "type": "string",
+              "exapmle": ["Common", "Uncommon", "Rare", "Epic", "Legendary"]
+            }
+          }
+        }
+      },
+      "PostCardRequestWithJpeg": {
+        "type": "object",
+        "properties": {
+          "cardName": {
+            "type": "string",
+            "description": "Cards's name",
+            "example": "Exposition Universelle2"
+          },
+          "cardDate": {
+            "type": "string",
+            "description": "Card's date. Format - year-month-day",
+            "example": "2020-12-31"
+          },
+          "cardNumber": {
+            "type": "string",
+            "description": "X/21 (X is the number of the card, 21 - is autofielled from Number of series cards  )",
+            "example": "1/21"
+          },
+          "circulation": {
+            "type": "integer"
+          },
+          "type": {
+            "type": "array",
+            "description": "Cards's type Options",
+            "items": {
+              "type": "string",
+              "example": "Human"
+            }
+          },
+          "rarity": {
+            "type": "array",
+            "description": "Cards's Rarity Options",
+            "items": {
+              "type": "string",
+              "example": "Common"
+            }
+          },
+          "categories": {
+            "type": "array",
+            "description": "Cards's categories Options",
+            "items": {
+              "type": "string",
+              "example": "france"
+            }
+          },
+          "description": {
+            "type": "string",
+            "description": "Information about card",
+            "example": "The fourth of eight expositions held in the portrait painting buy Italian artist Leonardo da Vinci..."
+          },
+          "goldenCard": {
+            "type": "boolean",
+            "description": "Card's status. In default - false",
+            "example": false
+          },
+          "openseaLink": {
+            "type": "string",
+            "description": "Golden Card link on OpenSea. Open only if Golden Card is true",
+            "example": "https://opensea.io"
+          },
+          "artist": {
+            "type": "string",
+            "example": "Claudio Bandoli"
+          },
+          "animator": {
+            "type": "string",
+            "example": "Claudio Bandoli"
+          },
+          "file": {
+            "type": "string",
+            "format": "binary",
+            "description": "Card's image"
+          }
+        }
+      },
+      "UpdateCardRequest": {
+        "type": "object",
+        "properties": {
+          "cardName": {
+            "type": "string",
+            "description": "Cards's name",
+            "example": "Exposition"
+          },
+          "goldenCard": {
+            "type": "boolean",
+            "description": "Cards's type Options",
+            "example": true
+          }
+        }
+      },
+      "UpdateCardResponse": {
+        "type": "object",
+        "properties": {
+          "cardName": {
+            "type": "string",
+            "description": "Cards's name",
+            "example": "Exposition"
+          },
+          "cardDate": {
+            "type": "string",
+            "description": "Card's date. Format - year-month-day",
+            "example": "2020-12-31"
+          },
+          "series": {
+            "type": "string",
+            "description": "Card's series id",
+            "example": "507f1f77bcf86cd799439011"
+          },
+          "cardNumber": {
+            "type": "string",
+            "description": "X/21 (X is the number of the card, 21 - is autofielled from Number of series cards  )",
+            "example": "1/21"
+          },
+          "edition": {
+            "type": "string",
+            "description": "Card's edition id",
+            "example": "507f1f77bcf86cd799439011"
+          },
+          "circulation": {
+            "type": "integer"
+          },
+          "uploadCardThumbnailJpj": {
+            "type": "string",
+            "description": "Cloud's Jpg url (created if 'file' field was provided while adding new card)",
+            "example": "https://res.cloudinary.com/debt92wvz/image/upload/v1636659464/cardsJpg/rqhxohiqidv6gpffsai2.png"
+          },
+          "idCloudJpg": {
+            "type": "string",
+            "description": "Cloud's Webm id. Exists only with uploadCardThumbnailJpj",
+            "example": "cardsJpg/arm1hze2vws2oe9inywy"
+          },
+          "uploadCardHighResWebm": {
+            "type": "string",
+            "description": "Cloud's Webm url (created if 'file' field was provided while adding new card)",
+            "example": "https://res.cloudinary.com/debt92wvz/video/upload/v1636659373/cardsWebm/limahh5bkoo9z4bdlobr.webm"
+          },
+          "idCloudWebm": {
+            "type": "string",
+            "description": "Cloud's Webm id. Exists only with uploadCardHighResWebm",
+            "example": "cardsWebm/arm1hze2vws2oe9inywy"
+          },
+          "type": {
+            "type": "array",
+            "description": "Cards's type Options",
+            "items": {
+              "type": "string",
+              "example": ["Human", "Event", "Invention", "Artwork", "Special"]
+            }
+          },
+          "rarity": {
+            "type": "array",
+            "description": "Cards's Rarity Options",
+            "items": {
+              "type": "string",
+              "exapmle": ["Common", "Uncommon", "Rare", "Epic", "Legendary"]
+            }
+          },
+          "categories": {
+            "type": "array",
+            "description": "Card's category",
+            "items": {
+              "type": "string"
+            }
+          },
+          "description": {
+            "type": "string",
+            "description": "Information about card",
+            "example": "The fourth of eight expositions held in the portrait painting buy Italian artist Leonardo da Vinci..."
+          },
+          "goldenCard": {
+            "type": "boolean",
+            "description": "Card's status",
+            "example": true
+          },
+          "openseaLink": {
+            "type": "string",
+            "description": "Golden Card link on OpenSea. Open only if Golden Card is true",
+            "example": "https://opensea.io"
+          },
+          "artist": {
+            "type": "string",
+            "example": "Claudio Bandoli"
+          },
+          "animator": {
+            "type": "string",
+            "example": "Claudio Bandoli"
+          },
+          "id": {
+            "type": "string",
+            "description": "Cards's id",
+            "example": "507f1f77bcf86cd799439011"
+          }
+        }
+      },
+      "PatchCardRequest": {
+        "required": ["fileWebm"],
+        "type": "object",
+        "properties": {
+          "fileWebm": {
+            "type": "string",
+            "format": "binary",
+            "description": "Card's image"
+          }
+        }
+      },
+      "PatchCardResponse": {
+        "type": "object",
+        "properties": {
+          "created": {
+            "type": "string",
+            "description": "Card's image url"
+          }
+        }
+      },
+      "GetFaqsResponse": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "question": {
+                  "type": "string",
+                  "description": "Qusetion",
+                  "example": "How do you do?"
+                },
+                "answer": {
+                  "type": "string",
+                  "description": "Answer",
+                  "example": "I'm fine"
+                },
+                "id": {
+                  "type": "string",
+                  "description": "QA id",
+                  "example": "507f1f77bcf86cd799439011"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "securitySchemes": {
+      "Bearer": {
+        "type": "http",
+        "scheme": "bearer",
+        "bearerFormat": "JWT"
+      }
+    }
+  }
+}

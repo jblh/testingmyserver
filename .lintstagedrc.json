@@ -1,0 +1,7 @@
+{
+  "*.{json,css,scss,html,md}": ["prettier --write -c .prettierrc"],
+  "*.{js,ts}": [
+    "eslint --debug --fix --color",
+    "prettier --write -c .prettierrc"
+  ]
+}

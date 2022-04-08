@@ -10,16 +10,17 @@ const guard = require('../../helpers/guard')
 
 router.get('/cards-categories', CardsController.getAllCategories)
 
-router
-  .get('/cards/:editionId', CardsController.get)
-  .post(
-    '/cards/:editionId',
-    upload.single('file'),
-    guard,
-    validationCreatedCard,
-    CardsController.create,
-  )
+// New cards
+router.get('/cards/:editionId', CardsController.get).post(
+  '/cards/:editionId',
+  // upload.single('file'),
+  upload.array('file'),
+  guard,
+  validationCreatedCard,
+  CardsController.create,
+)
 
+// Update cards
 router
   .get('/card/:id', CardsController.getById)
   .put(

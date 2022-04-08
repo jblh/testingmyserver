@@ -38,6 +38,7 @@ app.use((_req, res) => {
 })
 
 app.use((err, _req, res, _next) => {
+  console.log(err.message)
   res.status(err.status || HttpCodes.SERVER_ERROR).json({
     message: err.message || 'unknown error',
     status: err.status || HttpCodes.SERVER_ERROR,

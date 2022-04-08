@@ -83,12 +83,24 @@ class CardsController extends RootController {
       body.edition = editionId
       body.series = edition.series
 
-      if (req.file) {
+      // jpg/png
+      if (req.files[0]) {
         const uploads = new CloudUploadService()
-        const { idCloudJpg, imgUrl } = await uploads.saveImg(req.file.path)
+        const { idCloudJpg, imgUrl } = await uploads.saveImg(req.files[0].path)
         body.uploadCardThumbnailJpg = imgUrl
         body.idCloudJpg = idCloudJpg
-        await fs.unlink(req.file.path)
+        await fs.unlink(req.files[0].path)
+      }
+
+      // webm
+      if (req.files[1]) {
+        const uploads = new CloudUploadService()
+        const { idCloudWebm, webmUrl } = await uploads.saveWebm(
+          req.files[1].path,
+        )
+        body.uploadCardHighResWebm = webmUrl
+        body.idCloudWebm = idCloudWebm
+        await fs.unlink(req.files[1].path)
       }
 
       const newItem = await this.methodsName.createItem(body)
@@ -193,13 +205,14 @@ class CardsController extends RootController {
     try {
       const card = await this.methodsName.getById(id)
 
-      if (!card.goldenCard) {
-        await fs.unlink(req.file.path)
-        return resBuilder.error({
-          code: HttpCodes.SERVER_ERROR,
-          message: `The status of the card ${card.cardName} should be golden for upload video`,
-        })
-      }
+      // If this is un-commented, updating the webm of normal cards will throw error:
+      // if (!card.goldenCard) {
+      //   await fs.unlink(req.file.path)
+      //   return resBuilder.error({
+      //     code: HttpCodes.SERVER_ERROR,
+      //     message: `The status of the card ${card.cardName} should be golden for upload video`,
+      //   })
+      // }
 
       const uploads = new CloudUploadService()
       const { idCloudWebm, webmUrl } = await uploads.saveWebm(req.file.path)

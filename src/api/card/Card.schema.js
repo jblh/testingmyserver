@@ -9,8 +9,9 @@ const cardSchema = new Schema(
       unique: true,
     },
     cardDate: {
-      // format - year-month-day
-      type: Date,
+      // format: day/month/year
+      type: String,
+      // type: Date,
     },
     series: {
       // autofield from series Name
